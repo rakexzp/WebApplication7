@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Areas.Identity.Data;
 using WebApplication7.Data;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ManDBContextConnection") ?? throw new InvalidOperationException("Connection string 'ManDBContextConnection' not found.");
 
@@ -13,6 +14,8 @@ builder.Services.AddDefaultIdentity<WebApplicationUser>(options => options.SignI
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<WebApplication7Context>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WebApplication7Context") ?? throw new InvalidOperationException("Connection string 'WebApplication7Context' not found.")));
 
 var app = builder.Build();
 

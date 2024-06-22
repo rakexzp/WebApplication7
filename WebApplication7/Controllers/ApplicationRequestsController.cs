@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebApplication7.Areas.Identity.Data;
 using WebApplication7.Data;
 using WebApplication7.Models;
 
@@ -12,9 +13,9 @@ namespace WebApplication7.Controllers
 {
     public class ApplicationRequestsController : Controller
     {
-        private readonly ManDBContext _context;
+        private readonly WebApplication7Context _context;
 
-        public ApplicationRequestsController(ManDBContext context)
+        public ApplicationRequestsController(WebApplication7Context context)
         {
             _context = context;
         }
@@ -22,8 +23,8 @@ namespace WebApplication7.Controllers
         // GET: ApplicationRequests
         public async Task<IActionResult> Index()
         {
-            var manDBContext = _context.ApplicationRequest.Include(a => a.User);
-            return View(await manDBContext.ToListAsync());
+            var webApplication7Context = _context.ApplicationRequest.Include(a => a.User);
+            return View(await webApplication7Context.ToListAsync());
         }
 
         // GET: ApplicationRequests/Details/5
@@ -48,7 +49,7 @@ namespace WebApplication7.Controllers
         // GET: ApplicationRequests/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Set<WebApplicationUser>(), "Id", "Id");
             return View();
         }
 
@@ -65,7 +66,7 @@ namespace WebApplication7.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", applicationRequest.UserId);
+            ViewData["UserId"] = new SelectList(_context.Set<WebApplicationUser>(), "Id", "Id", applicationRequest.UserId);
             return View(applicationRequest);
         }
 
@@ -82,7 +83,7 @@ namespace WebApplication7.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", applicationRequest.UserId);
+            ViewData["UserId"] = new SelectList(_context.Set<WebApplicationUser>(), "Id", "Id", applicationRequest.UserId);
             return View(applicationRequest);
         }
 
@@ -118,7 +119,7 @@ namespace WebApplication7.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", applicationRequest.UserId);
+            ViewData["UserId"] = new SelectList(_context.Set<WebApplicationUser>(), "Id", "Id", applicationRequest.UserId);
             return View(applicationRequest);
         }
 
