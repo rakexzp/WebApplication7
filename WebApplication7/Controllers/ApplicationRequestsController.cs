@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Data;
@@ -59,9 +55,11 @@ namespace WebApplication7.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,LastName,Email,PhoneNumber,CEO,DateOfBirth,Serial,Number,Type,CreationDate,Status,UserId")] ApplicationRequest applicationRequest)
         {
+            var emptyapplicationRequest = new ApplicationRequest();
+
             if (ModelState.IsValid)
             {
-                _context.Add(applicationRequest);
+                _context.ApplicationRequest.Add(emptyapplicationRequest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
